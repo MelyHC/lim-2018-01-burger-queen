@@ -1,0 +1,28 @@
+[debug] [2018-10-15T22:42:51.711Z] ----------------------------------------------------------------------
+[debug] [2018-10-15T22:42:51.715Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\MelyHC\AppData\Roaming\npm\node_modules\firebase-tools\bin\firebase functions:shell
+[debug] [2018-10-15T22:42:51.715Z] CLI Version:   5.0.1
+[debug] [2018-10-15T22:42:51.715Z] Platform:      win32
+[debug] [2018-10-15T22:42:51.715Z] Node Version:  v8.11.3
+[debug] [2018-10-15T22:42:51.715Z] Time:          Mon Oct 15 2018 17:42:51 GMT-0500 (Hora est. Pacífico, Sudamérica)
+[debug] [2018-10-15T22:42:51.716Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2018-10-15T22:42:51.728Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2018-10-15T22:42:51.729Z] > authorizing via signed-in user
+[debug] [2018-10-15T22:42:51.729Z] [iam] checking project burger-queen-45463 for permissions ["firebase.projects.get"]
+[debug] [2018-10-15T22:42:51.733Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/burger-queen-45463:testIamPermissions  
+
+[debug] [2018-10-15T22:42:53.037Z] <<< HTTP RESPONSE 200
+[info] i  functions: Preparing to emulate functions.
+[debug] [2018-10-15T22:42:54.152Z] Fetching environment
+[debug] [2018-10-15T22:42:54.154Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/burger-queen-45463  
+ 
+[debug] [2018-10-15T22:42:55.156Z] <<< HTTP RESPONSE 200
+[debug] [2018-10-15T22:42:55.157Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/404691228629:getServerAppConfig  
+ 
+[debug] [2018-10-15T22:42:56.196Z] <<< HTTP RESPONSE 200
+[debug] [2018-10-15T22:42:56.197Z] Starting @google-cloud/functions-emulator
+[debug] [2018-10-15T22:42:58.765Z] Parsing function triggers
+[debug] [2018-10-15T22:42:59.378Z] Deploying functions locally
+[debug] [2018-10-15T22:42:59.381Z] Deploying functions locally
+[info] +  functions: createProfile
+[info] +  functions: deleteProfile
