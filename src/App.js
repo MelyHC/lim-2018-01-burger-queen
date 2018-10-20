@@ -12,66 +12,13 @@ firebase.initializeApp({
 
 const db = firebase.firestore();
 const settings = {/* your settings... */ timestampsInSnapshots: true };
-firebase.firestore().settings(settings);
+db.settings(settings);
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      food: {
-        breakfast: [
-          {
-            price: 5,
-            item: 'Cafe americano'
-          },
-          {
-            price: 7,
-            item: 'Cafe con leche'
-          },
-          {
-            price: 10,
-            item: 'Sandwich de jamón y queso'
-          },
-          {
-            price: 7,
-            item: 'Jugo natural'
-          }
-        ],
-        diner: [
-          {
-            price: 10,
-            item: 'Hamburguesa simple'
-          },
-          {
-            price: 15,
-            item: 'Hamburguesa doble'
-          },
-          {
-            price: 5,
-            item: 'Papas fritas'
-          },
-          {
-            price: 5,
-            item: 'Aros de cebolla'
-          },
-          {
-            price: 5,
-            item: 'Agua 500ml'
-          },
-          {
-            price: 8,
-            item: 'Agua 750ml'
-          },
-          {
-            price: 7,
-            item: 'Gaseosa 500ml'
-          },
-          {
-            price: 10,
-            item: 'Gaseosa 750ml'
-          }
-        ]
-      },
+      food: {},
       typefood: 'breakfast',
       order: {
         user: '',
@@ -82,12 +29,14 @@ class App extends Component {
   }
 
   componentDidMount() {
-    // db.collection('food').get().then((querySnapshot) => {
-    //   querySnapshot.forEach((doc) => {
-    //     console.log(doc.data())
-
-    //   });
-    // });
+    db.collection('food').get().then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        console.log(doc.data())
+        this.setState({
+          food: doc.data()
+        })
+      });
+    });
   }
 
   handleClick = () => {
@@ -112,15 +61,28 @@ class App extends Component {
       })
   }
 
-  handleAddItem = (name, price) => {
+  handleAddItem = (name, priceI, idActual) => {
     const { order } = this.state;
-    order.items.push({
-      item: name,
-      price
-    })
-    let sum = 0
-    order.items.forEach(({ price }) => sum += price);
+    let sum = 0;
+
+    if (order.items.find(({ id }) => id === idActual)) {
+      order.items.forEach(item => {
+        if (item.id === idActual) {
+          item.count++
+        }
+      })
+    } else {
+      order.items.push({
+        item: name,
+        price: priceI,
+        id: idActual,
+        count: 1
+      });
+
+    }
+    order.items.forEach(({ price, count }) => sum += price * count);
     order.totalPrice = sum;
+
     this.setState({
       order
     })
@@ -128,25 +90,27 @@ class App extends Component {
 
   render() {
     const { typefood, food, order } = this.state;
+    const size = Object.keys(food);
     return (
       <div>
-        <header className="App-header">
-          <h3 className="text-center">Burger Queen</h3>
-
+        <header className="App-header bg-primary text-white">
+          <h3 className="">Burger Queen</h3>
         </header>
         <button className="btn btn-info m-1" name="breakfast" onClick={this.handleChange}>Desayuno</button>
         <button className="btn btn-info m-1" name="diner" onClick={this.handleChange}>Resto del dia</button>
         <div className="row">
           <div className="col-7">
             {
-              typefood === 'breakfast' ?
-                food.breakfast.map(({ item, price }) => <ItemFood name={item} price={price} key={item} add={this.handleAddItem} />) :
-                food.diner.map(({ item, price }) => <ItemFood name={item} price={price} key={item} add={this.handleAddItem} />)
+              size.length ?
+                typefood === 'breakfast' ?
+                  food.breakfast.map(({ item, price }) => <ItemFood name={item} price={price} key={item} add={this.handleAddItem} />) :
+                  food.diner.map(({ item, price }) => <ItemFood name={item} price={price} key={item} add={this.handleAddItem} />)
+                : <span className="d-center">Cargando menu ...</span>
             }
           </div>
           <div className="col-5">
             <div className="card">
-              {order.items.map(({ item, price }) => <AddItem name={item} price={price} key={item} />)}
+              {order.items.map(({ item, price, count }, i) => <AddItem name={item} price={price} key={i} count={count} />)}
               <div className="card-footer">Total: s/. {order.totalPrice}.00</div>
             </div>
           </div>
