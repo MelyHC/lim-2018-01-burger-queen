@@ -3,6 +3,11 @@
   height: 25px;
 } */
 
+body{
+  margin: 0px;
+  padding: 0px;
+}
+
 h3 {
   margin: 0px;
 }
@@ -12,6 +17,21 @@ h3 {
   /* color: white;
   border-bottom: solid 1.5px #61dafb */
 }
+
+table {
+  margin: 0px;
+  padding: 0px;
+  border: 1px solid #dee2e6;
+}
+
+/* .col-5 {
+ padding-right: 0px;
+} */
+
+/* .row {
+  padding: 0px;
+} */
+
 
 /* @keyframes App-logo-spin {
   from {
