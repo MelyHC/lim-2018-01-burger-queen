@@ -21,18 +21,18 @@ class App extends Component {
     this.state = {
       food: {},
       typefood: 'breakfast',
-      order: {
+      newOrder: {
         user: '',
         totalPrice: 0,
         items: []
-      }
+      },
+      orders: []
     }
   }
 
   componentDidMount() {
-    db.collection('food').get().then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        console.log(doc.data())
+    db.collection('food').get().then(snap => {
+      snap.forEach((doc) => {
         this.setState({
           food: doc.data()
         })
@@ -62,25 +62,26 @@ class App extends Component {
       })
   }
 
-  sumTotalOrder = (order) => {
+  sumTotalOrder = (newOrder) => {
     let sum = 0;
-    order.items.forEach(({ price }) => sum += price);
-    order.totalPrice = sum;
+    newOrder.items.forEach(({ price }) => sum += price);
+    newOrder.totalPrice = sum;
+
+    this.setState({ newOrder })
   }
 
   handleAddItem = (name, priceI, idActual) => {
-    const { order } = this.state;
+    const { newOrder } = this.state;
 
-    if (order.items.find(({ id }) => id === idActual)) {
-      order.items.forEach(item => {
+    if (newOrder.items.find(({ id }) => id === idActual)) {
+      newOrder.items.forEach(item => {
         if (item.id === idActual) {
-          item.price = priceI / item.count;
           item.count++;
           item.price = priceI * item.count;
         }
       })
     } else {
-      order.items.push({
+      newOrder.items.push({
         item: name,
         price: priceI,
         id: idActual,
@@ -88,24 +89,25 @@ class App extends Component {
       });
 
     }
-    this.sumTotalOrder(order)
+    this.sumTotalOrder(newOrder)
 
     this.setState({
-      order
+      newOrder
     })
   }
 
   handleRemove = (id) => {
-    const { order } = this.state;
-
-    this.sumTotalOrder(order);
-    // this.setState({ order });
-
+    const { newOrder } = this.state;
+    console.log(id)
+    // newOrder.items.splice(id, 1)
     this.setState({
-      order: {
-        items: this.state.order.items.filter(item => item.id !== id)
+      newOrder: {
+        ...newOrder,
+        items: newOrder.items.filter(item => item.id !== id)
       }
     })
+
+    this.sumTotalOrder(newOrder)
   }
 
   handleClient = () => {
@@ -113,7 +115,7 @@ class App extends Component {
   }
 
   render() {
-    const { typefood, food, order } = this.state;
+    const { typefood, food, newOrder } = this.state;
     const size = Object.keys(food);
     return (
       <div>
@@ -150,13 +152,13 @@ class App extends Component {
                 </tr>
               </thead>
               <tbody>
-                {order.items.map(({ item, price, count }, i) =>
+                {newOrder.items.map(({ item, price, count }, i) =>
                   <AddItem name={item} price={price} key={i} count={count}
                     add={this.addCount} remove={this.handleRemove} />
                 )}
                 <tr className="text-center table-active">
                   <th>Total</th>
-                  <th className="text-center" >s/. {order.totalPrice}</th>
+                  <th className="text-center" >s/. {newOrder.totalPrice}</th>
                   <td colspan="2"></td>
                   {/* <td></td> */}
                 </tr>
