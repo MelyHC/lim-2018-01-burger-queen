@@ -24,6 +24,14 @@ table {
   border: 1px solid #dee2e6;
 }
 
+.cursor {
+  cursor: pointer;
+}
+
+.table td {
+  vertical-align: inherit;
+}
+
 /* .col-5 {
  padding-right: 0px;
 } */

@@ -31,20 +31,28 @@ class App extends Component {
   }
 
   componentDidMount() {
-    // db.collection('food').get().then(snap => {
-    //   snap.forEach((doc) => {
-    //     this.setState({
-    //       food: doc.data()
-    //     })
-    //   });
-    // });
+    db.collection('food').get().then(snap => {
+      snap.forEach((doc) => {
+        this.setState({
+          food: doc.data()
+        })
+      });
+    });
   }
 
   handleClick = () => {
-    db.collection("clients").add({
-
+    const { user, items, totalPrice } = this.state.newOrder;
+    db.collection("orders").add({
+      user, items, totalPrice
     })
-      .then((docRef) => {
+      .then(docRef => {
+        this.setState({
+          newOrder: {
+            user: '',
+            totalPrice: 0,
+            items: []
+          }
+        })
         console.log("Document written with ID: ", docRef.id);
       })
       .catch((error) => {
@@ -70,18 +78,38 @@ class App extends Component {
     const { newOrder } = this.state;
     newOrder.items.forEach(item => {
       if (item.id === idActual) {
-        item.price = priceI / item.count;
+        if (item.price === priceI) {
+          priceI = priceI / item.count;
+        }
         item.count++;
-        item.price = item.price * item.count;
+        item.price = priceI * item.count;
       }
     })
+    this.sumTotalOrder(newOrder);
+  }
+
+  reduceCount = (priceI, idActual, i) => {
+    const { newOrder } = this.state;
+
+    newOrder.items.forEach(item => {
+      if (item.id === idActual) {
+        item.price = priceI / item.count;
+        item.count--;
+        item.price = item.price * item.count;
+        if (item.count === 0) {
+          this.handleRemove(i);
+        }
+      }
+    })
+    this.sumTotalOrder(newOrder);
+
   }
 
   handleAddItem = (name, priceI, idActual) => {
     const { newOrder } = this.state;
 
     if (newOrder.items.find(({ id }) => id === idActual)) {
-
+      this.addCount(priceI, idActual);
     } else {
       newOrder.items.push({
         item: name,
@@ -94,13 +122,19 @@ class App extends Component {
     this.sumTotalOrder(newOrder);
   }
 
-  handleRemove = (id) => {
+  handleRemove = (index) => {
     const { newOrder } = this.state;
-    newOrder.items.splice(id, 1);
+    newOrder.items.splice(index, 1);
     this.sumTotalOrder(newOrder)
   }
 
-  handleClient = () => {
+  handleClient = (e) => {
+    this.setState({
+      newOrder: {
+        ...this.state.newOrder,
+        user: e.target.value
+      }
+    })
 
   }
 
@@ -112,8 +146,8 @@ class App extends Component {
         <header className="App-header bg-primary text-white">
           <h3 className="">Burger Queen</h3>
         </header>
-        <button className="btn btn-info m-2" name="breakfast" onClick={this.handleChange}>Desayuno</button>
-        <button className="btn btn-info m-2" name="diner" onClick={this.handleChange}>Resto del día</button>
+        <button className="btn btn-primary m-2" name="breakfast" onClick={this.handleChange}>Desayuno</button>
+        <button className="btn btn-primary m-2" name="diner" onClick={this.handleChange}>Almuerzo/Cena</button>
         <div className="container-fluid">
           <div className="row">
             <div className="col-md-7">
@@ -122,8 +156,7 @@ class App extends Component {
                   size.length ?
                     food[typefood].map(({ item, price }) =>
                       <ItemFood name={item} price={price} key={item}
-                        add={this.handleAddItem} />
-                    )
+                        add={this.handleAddItem} />)
                     : <span className="ml-3">Cargando menú ...</span>
                 }
               </div>
@@ -141,17 +174,16 @@ class App extends Component {
                 <tbody>
                   {newOrder.items.map(({ item, price, count }, i) =>
                     <AddItem name={item} price={price} key={i} i={i} count={count}
-                      add={this.addCount} remove={this.handleRemove} />
+                      add={this.addCount} remove={this.handleRemove} reduce={this.reduceCount} />
                   )}
                   <tr className="text-center table-active">
                     <th>Total</th>
                     <th className="text-center" >s/. {newOrder.totalPrice}</th>
-                    <td colspan="2"></td>
-                    {/* <td></td> */}
+                    <td colSpan="2"></td>
                   </tr>
                   <tr>
-                    <td colspan="2"><input className="form-control" type="text" placeholder="Cliente" /></td>
-                    <td colspan="2"><button className="btn btn-success">Enviar a cocina</button></td>
+                    <td colSpan="2"><input className="form-control" type="text" placeholder="Cliente" onChange={this.handleClient} value={newOrder.user} /></td>
+                    <td colSpan="2"><button className="btn btn-success" onClick={this.handleClick}>Enviar a cocina</button></td>
                   </tr>
                 </tbody>
               </table>
