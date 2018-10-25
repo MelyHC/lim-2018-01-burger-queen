@@ -31,13 +31,13 @@ class App extends Component {
   }
 
   componentDidMount() {
-    db.collection('food').get().then(snap => {
-      snap.forEach((doc) => {
-        this.setState({
-          food: doc.data()
-        })
-      });
-    });
+    // db.collection('food').get().then(snap => {
+    //   snap.forEach((doc) => {
+    //     this.setState({
+    //       food: doc.data()
+    //     })
+    //   });
+    // });
   }
 
   handleClick = () => {
@@ -53,13 +53,9 @@ class App extends Component {
   }
 
   handleChange = (e) => {
-    e.target.name === 'breakfast' ?
-      this.setState({
-        typefood: 'breakfast'
-      }) :
-      this.setState({
-        typefood: 'diner'
-      })
+    this.setState({
+      typefood: e.target.name
+    })
   }
 
   sumTotalOrder = (newOrder) => {
@@ -70,16 +66,22 @@ class App extends Component {
     this.setState({ newOrder })
   }
 
+  addCount = (priceI, idActual) => {
+    const { newOrder } = this.state;
+    newOrder.items.forEach(item => {
+      if (item.id === idActual) {
+        item.price = priceI / item.count;
+        item.count++;
+        item.price = item.price * item.count;
+      }
+    })
+  }
+
   handleAddItem = (name, priceI, idActual) => {
     const { newOrder } = this.state;
 
     if (newOrder.items.find(({ id }) => id === idActual)) {
-      newOrder.items.forEach(item => {
-        if (item.id === idActual) {
-          item.count++;
-          item.price = priceI * item.count;
-        }
-      })
+
     } else {
       newOrder.items.push({
         item: name,
@@ -89,24 +91,12 @@ class App extends Component {
       });
 
     }
-    this.sumTotalOrder(newOrder)
-
-    this.setState({
-      newOrder
-    })
+    this.sumTotalOrder(newOrder);
   }
 
   handleRemove = (id) => {
     const { newOrder } = this.state;
-    console.log(id)
-    // newOrder.items.splice(id, 1)
-    this.setState({
-      newOrder: {
-        ...newOrder,
-        items: newOrder.items.filter(item => item.id !== id)
-      }
-    })
-
+    newOrder.items.splice(id, 1);
     this.sumTotalOrder(newOrder)
   }
 
@@ -124,50 +114,48 @@ class App extends Component {
         </header>
         <button className="btn btn-info m-2" name="breakfast" onClick={this.handleChange}>Desayuno</button>
         <button className="btn btn-info m-2" name="diner" onClick={this.handleChange}>Resto del día</button>
-        <div className="row">
-          <div className="col-md-7">
-            <div className="row">
-              {
-                size.length ?
-                  typefood === 'breakfast' ?
-                    food.breakfast.map(({ item, price }) =>
+        <div className="container-fluid">
+          <div className="row">
+            <div className="col-md-7">
+              <div className="row">
+                {
+                  size.length ?
+                    food[typefood].map(({ item, price }) =>
                       <ItemFood name={item} price={price} key={item}
                         add={this.handleAddItem} />
-                    ) :
-                    food.diner.map(({ item, price }) =>
-                      <ItemFood name={item} price={price} key={item}
-                        add={this.handleAddItem} />)
-                  : <span className="dCenter">Cargando menú ...</span>
-              }
+                    )
+                    : <span className="ml-3">Cargando menú ...</span>
+                }
+              </div>
             </div>
-          </div>
-          <div className="col-md-5">
-            <table className="table">
-              <thead>
-                <tr className="text-center">
-                  <th scope="col">Item</th>
-                  <th scope="col">Precio</th>
-                  <th scope="col">Cantidad</th>
-                  <th scope="col"></th>
-                </tr>
-              </thead>
-              <tbody>
-                {newOrder.items.map(({ item, price, count }, i) =>
-                  <AddItem name={item} price={price} key={i} count={count}
-                    add={this.addCount} remove={this.handleRemove} />
-                )}
-                <tr className="text-center table-active">
-                  <th>Total</th>
-                  <th className="text-center" >s/. {newOrder.totalPrice}</th>
-                  <td colspan="2"></td>
-                  {/* <td></td> */}
-                </tr>
-                <tr>
-                  <td colspan="2"><input className="form-control" type="text" placeholder="Cliente" /></td>
-                  <td colspan="2"><button className="btn btn-success">Enviar a cocina</button></td>
-                </tr>
-              </tbody>
-            </table>
+            <div className="col-md-5">
+              <table className="table">
+                <thead>
+                  <tr className="text-center">
+                    <th scope="col">Item</th>
+                    <th scope="col">Precio</th>
+                    <th scope="col">Cantidad</th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {newOrder.items.map(({ item, price, count }, i) =>
+                    <AddItem name={item} price={price} key={i} i={i} count={count}
+                      add={this.addCount} remove={this.handleRemove} />
+                  )}
+                  <tr className="text-center table-active">
+                    <th>Total</th>
+                    <th className="text-center" >s/. {newOrder.totalPrice}</th>
+                    <td colspan="2"></td>
+                    {/* <td></td> */}
+                  </tr>
+                  <tr>
+                    <td colspan="2"><input className="form-control" type="text" placeholder="Cliente" /></td>
+                    <td colspan="2"><button className="btn btn-success">Enviar a cocina</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div >
