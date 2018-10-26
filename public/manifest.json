@@ -1,15 +1,114 @@
 {
-  "short_name": "BQueen",
-  "name": "Burguer Queen",
-  "icons": [
-    {
-      "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
-    }
-  ],
-  "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+    "short_name": "BQueen",
+    "name": "Burguer Quenn",
+    "icons": [
+        {
+            "src": "./content/images/favicon.ico",
+            "sizes": "64x64 32x32 24x24 16x16",
+            "type": "image/x-icon"
+        },
+        {
+            "src": "./content/images/f1e0589a-82fb-d856-ad51-34ceba3710f8.webPlatform.png",
+            "sizes": "44x44",
+            "type": "image/png"
+        },
+        {
+            "src": "./content/images/93d1b399-4625-62da-098a-870d3b8d4c9a.webPlatform.png",
+            "sizes": "48x48",
+            "type": "image/png"
+        },
+        {
+            "src": "./content/images/9fb60a7f-7360-9bb8-237e-091dcece8e1d.webPlatform.png",
+            "sizes": "1240x600",
+            "type": "image/png"
+        },
+        {
+            "src": "./content/images/f16f3aeb-2d62-4cea-87bf-13f0fde7043a.webPlatform.png",
+            "sizes": "300x300",
+            "type": "image/png"
+        },
+        {
+            "src": "./content/images/8bd28253-17aa-7a15-6fc0-7ebcd288094a.webPlatform.png",
+            "sizes": "150x150",
+            "type": "image/png"
+        },
+        {
+            "src": "./content/images/914c91d0-876e-50f1-51c5-fa23bb9fa389.webPlatform.png",
+            "sizes": "88x88",
+            "type": "image/png"
+        },
+        {
+            "src": "./content/images/961ce39b-f5e0-4bb4-0d8b-224f4036e1a5.webPlatform.png",
+            "sizes": "24x24",
+            "type": "image/png"
+        },
+        {
+            "src": "./content/images/a63bf37f-6dae-e866-5849-6304d23ba5bb.webPlatform.png",
+            "sizes": "50x50",
+            "type": "image/png"
+        },
+        {
+            "src": "./content/images/46b26ae2-f5de-5458-335e-2358275fe37e.webPlatform.png",
+            "sizes": "620x300",
+            "type": "image/png"
+        },
+        {
+            "src": "./content/images/ca468858-2230-5aec-b344-91bc5d5e8d96.webPlatform.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "./content/images/00c1bdb0-40b6-8858-060e-66fe90b9cd45.webPlatform.png",
+            "sizes": "144x144",
+            "type": "image/png"
+        },
+        {
+            "src": "./content/images/6f5da7a9-c6a1-a340-29bc-b040c085b739.webPlatform.png",
+            "sizes": "96x96",
+            "type": "image/png"
+        },
+        {
+            "src": "./content/images/65017727-da89-6aba-0a98-1af1ae8443f8.webPlatform.png",
+            "sizes": "72x72",
+            "type": "image/png"
+        },
+        {
+            "src": "./content/images/32d172f4-cc78-d788-4187-74230ebded3f.webPlatform.png",
+            "sizes": "36x36",
+            "type": "image/png"
+        },
+        {
+            "src": "./content/images/446cf46f-870f-a43f-13eb-d0de08463d07.webPlatform.png",
+            "sizes": "1024x1024",
+            "type": "image/png"
+        },
+        {
+            "src": "./content/images/7eb964c0-0308-3f44-3dd8-9501a38ad654.webPlatform.png",
+            "sizes": "180x180",
+            "type": "image/png"
+        },
+        {
+            "src": "./content/images/9cdd05b8-0681-099e-f687-a9e4d019ea6b.webPlatform.png",
+            "sizes": "152x152",
+            "type": "image/png"
+        },
+        {
+            "src": "./content/images/b532196c-2722-348f-47cd-b22954410a92.webPlatform.png",
+            "sizes": "120x120",
+            "type": "image/png"
+        },
+        {
+            "src": "./content/images/ba3ae383-b67e-b393-ee0f-95c67dc1b60d.webPlatform.png",
+            "sizes": "76x76",
+            "type": "image/png"
+        }
+    ],
+    "start_url": "https://melyhc.github.io/lim-2018-01-burger-queen/?utm_source=web_app_manifest",
+    "display": "standalone",
+    "theme_color": "#000000",
+    "background_color": "#ffffff",
+    "lang": "Spanish; Castilian",
+    "orientation": "portrait",
+    "description": "Web desarrollada para realizar un pedido y almacenarlo en firebase ",
+    "scope": "./"
 }
